@@ -1,5 +1,5 @@
 extends Node
-class_name InputManager
+class_name InputManager2D
 
 #@export var _scene_camera: Camera2D
 @export var _building_grid: TileMap

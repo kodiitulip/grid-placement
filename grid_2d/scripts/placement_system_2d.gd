@@ -1,8 +1,8 @@
 extends Node
-class_name PlacementSysytem
+class_name PlacementSysytem2D
 
 #@export var _mouse_indicator: Node2D
-@export var _input_manager: InputManager
+@export var _input_manager: InputManager2D
 @export var _cell_indicator: NinePatchRect
 @export var _grid: TileMap
 

@@ -1,0 +1,86 @@
+[gd_scene load_steps=11 format=3 uid="uid://b2c64strrrbvr"]
+
+[ext_resource type="Script" path="res://grid_3d/scripts/input_manager_3d.gd" id="1_prlll"]
+[ext_resource type="Script" path="res://grid_3d/scripts/placement_system_3d.gd" id="2_so7ta"]
+[ext_resource type="Texture2D" uid="uid://cu8i2auofpnqs" path="res://grid_2d/assets/cursor_selector.png" id="3_8b6p3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fpm85"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ymvoh"]
+sky_material = SubResource("ProceduralSkyMaterial_fpm85")
+
+[sub_resource type="Environment" id="Environment_v3vvq"]
+background_mode = 2
+sky = SubResource("Sky_ymvoh")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yq70w"]
+size = Vector3(20, 0, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pd4vx"]
+albedo_color = Color(0, 0.745098, 0.25098, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_oai35"]
+material = SubResource("StandardMaterial3D_pd4vx")
+size = Vector2(20, 20)
+
+[sub_resource type="SphereMesh" id="SphereMesh_f3bin"]
+
+[node name="GridPlacementSystem" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_v3vvq")
+
+[node name="Grass" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+collision_layer = 3
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grass"]
+shape = SubResource("BoxShape3D_yq70w")
+
+[node name="Grass" type="MeshInstance3D" parent="Grass"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
+mesh = SubResource("PlaneMesh_oai35")
+skeleton = NodePath("")
+
+[node name="BuildingSystem" type="Node" parent="."]
+
+[node name="InputManager3D" type="Node" parent="BuildingSystem" node_paths=PackedStringArray("_scene_camera")]
+script = ExtResource("1_prlll")
+_scene_camera = NodePath("../../Camera3D")
+
+[node name="PlacementSystem3D" type="Node" parent="BuildingSystem" node_paths=PackedStringArray("_mouse_indicator", "_cell_indicator", "_input_manager", "_grid")]
+script = ExtResource("2_so7ta")
+_mouse_indicator = NodePath("../MouseIndicator")
+_cell_indicator = NodePath("../CursorIndicator")
+_input_manager = NodePath("../InputManager3D")
+_grid = NodePath("../GridMap")
+
+[node name="MouseIndicator" type="MeshInstance3D" parent="BuildingSystem"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_f3bin")
+
+[node name="CursorIndicator" type="Sprite3D" parent="BuildingSystem"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+centered = false
+offset = Vector2(0, -16)
+pixel_size = 0.0625
+axis = 1
+double_sided = false
+texture_filter = 0
+texture = ExtResource("3_8b6p3")
+
+[node name="GridMap" type="GridMap" parent="BuildingSystem"]
+cell_size = Vector3(1, 1, 1)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 6, 3)
