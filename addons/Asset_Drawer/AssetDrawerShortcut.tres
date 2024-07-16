@@ -3,5 +3,5 @@
 [resource]
 device = -1
 ctrl_pressed = true
-keycode = 32
-unicode = 32
+keycode = 91
+unicode = 91

@@ -2,9 +2,10 @@ extends Node
 class_name InputManager3D
 
 @export var _scene_camera: Camera3D
+@export var _ray_length: float = 1000.0
 @export_flags_3d_physics var _placement_layer_mask: int = 2
 
-var _last_position: Vector3
+var _last_position: Vector3 = Vector3.ZERO
 
 static var _space: PhysicsDirectSpaceState3D
 static var _ray_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
@@ -21,16 +22,14 @@ func get_selected_map_position() -> Vector3:
 		return _last_position
 	
 	var mouse_pos: Vector2 = get_viewport().get_mouse_position()
-	var ray_length: float = 1000.0
 	var from: Vector3 = _scene_camera.project_ray_origin(mouse_pos)
-	var to: Vector3 = _scene_camera.project_ray_normal(mouse_pos) * ray_length
+	var to: Vector3 = _scene_camera.project_ray_normal(mouse_pos) * _ray_length
 	_ray_query.from = from
 	_ray_query.to = to
 	var raycast_result: Dictionary = _space.intersect_ray(_ray_query)
 	
 	if raycast_result.has("position"):
 		var pos: Vector3 = raycast_result["position"]
-		#pos.y = abs(pos.y)
 		_last_position = pos
 	
 	return _last_position
