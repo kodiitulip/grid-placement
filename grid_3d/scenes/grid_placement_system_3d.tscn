@@ -1,10 +1,12 @@
-[gd_scene load_steps=15 format=3 uid="uid://b2c64strrrbvr"]
+[gd_scene load_steps=16 format=3 uid="uid://b2c64strrrbvr"]
 
 [ext_resource type="Script" path="res://grid_3d/scripts/input_manager_3d.gd" id="1_prlll"]
 [ext_resource type="Script" path="res://grid_3d/scripts/placement_system_3d.gd" id="2_so7ta"]
 [ext_resource type="Texture2D" uid="uid://cu8i2auofpnqs" path="res://grid_2d/assets/cursor_selector.png" id="3_8b6p3"]
-[ext_resource type="MeshLibrary" uid="uid://b2xqw38aiu7ok" path="res://grid_3d/assets/mesh_libraries/debug.tres" id="4_anv0f"]
+[ext_resource type="Resource" uid="uid://c4ttlryb52fsi" path="res://grid_3d/data/objects.tres" id="3_l817l"]
 [ext_resource type="Shader" path="res://grid_3d/assets/shaders/grid_shader.gdshader" id="4_pqypq"]
+[ext_resource type="Script" path="res://grid_3d/scripts/grid_visalization.gd" id="6_7oq4u"]
+[ext_resource type="PackedScene" uid="uid://63rwom6gok3i" path="res://grid_3d/scenes/ui/build_ui.tscn" id="6_wrulh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fpm85"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -19,9 +21,6 @@ sky = SubResource("Sky_ymvoh")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_yq70w"]
-size = Vector3(20, 1, 20)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pd4vx"]
 albedo_color = Color(0, 0.745098, 0.25098, 1)
 
@@ -31,16 +30,15 @@ size = Vector2(20, 20)
 
 [sub_resource type="SphereMesh" id="SphereMesh_f3bin"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_04yok"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_xs2n7"]
+size = Vector2(20, 20)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iswus"]
 render_priority = 0
 shader = ExtResource("4_pqypq")
-shader_parameter/scale_0 = 20
-shader_parameter/line_scale_0 = 0.04
-shader_parameter/color_0 = Color(1, 1, 1, 1)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_k7ch1"]
-material = SubResource("ShaderMaterial_04yok")
-size = Vector2(20, 20)
+shader_parameter/scale = Vector2(20, 20)
+shader_parameter/line_scale = 0.06
+shader_parameter/color = Color(1, 1, 1, 1)
 
 [node name="GridPlacementSystem" type="Node3D"]
 
@@ -51,15 +49,7 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_v3vvq")
 
-[node name="Grass" type="StaticBody3D" parent="."]
-collision_layer = 3
-collision_mask = 0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Grass"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499, 0)
-shape = SubResource("BoxShape3D_yq70w")
-
-[node name="Grass" type="MeshInstance3D" parent="Grass"]
+[node name="Grass" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, 0)
 mesh = SubResource("PlaneMesh_oai35")
 skeleton = NodePath("")
@@ -70,11 +60,13 @@ skeleton = NodePath("")
 script = ExtResource("1_prlll")
 _scene_camera = NodePath("../../Camera3D")
 
-[node name="PlacementSystem3D" type="Node" parent="BuildingSystem" node_paths=PackedStringArray("_cell_indicator", "_input_manager", "_grid")]
+[node name="PlacementSystem3D" type="Node" parent="BuildingSystem" node_paths=PackedStringArray("_cell_indicator", "_input_manager", "_grid", "_grid_visualization")]
 script = ExtResource("2_so7ta")
 _cell_indicator = NodePath("../CursorIndicator")
 _input_manager = NodePath("../InputManager3D")
 _grid = NodePath("../GridMap")
+_database = ExtResource("3_l817l")
+_grid_visualization = NodePath("../GridMap/GridVisualization")
 
 [node name="MouseIndicator" type="MeshInstance3D" parent="BuildingSystem"]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
@@ -82,6 +74,7 @@ visible = false
 mesh = SubResource("SphereMesh_f3bin")
 
 [node name="CursorIndicator" type="Sprite3D" parent="BuildingSystem"]
+sorting_offset = 1.0
 pixel_size = 0.0625
 axis = 1
 double_sided = false
@@ -89,13 +82,24 @@ texture_filter = 0
 texture = ExtResource("3_8b6p3")
 
 [node name="GridMap" type="GridMap" parent="BuildingSystem"]
-mesh_library = ExtResource("4_anv0f")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
+collision_layer = 2
+collision_mask = 0
+metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BuildingSystem/GridMap"]
-mesh = SubResource("PlaneMesh_k7ch1")
-skeleton = NodePath("../../..")
+[node name="GridVisualization" type="CSGMesh3D" parent="BuildingSystem/GridMap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+mesh = SubResource("PlaneMesh_xs2n7")
+material = SubResource("ShaderMaterial_iswus")
+script = ExtResource("6_7oq4u")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.416312, 0.84569, -0.333905, 0, 0.367242, 0.930126, 0.909222, 0.387222, -0.152887, -4.26127, 11.8702, -1.95114)
+
+[node name="UI" parent="." instance=ExtResource("6_wrulh")]
+
+[connection signal="build_object_selected" from="UI" to="BuildingSystem/PlacementSystem3D" method="_start_placement"]

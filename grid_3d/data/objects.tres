@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ObjectsDatabase3D" load_steps=7 format=3 uid="uid://c4ttlryb52fsi"]
+
+[ext_resource type="Script" path="res://grid_3d/scripts/resources/objects_database_resource.gd" id="1_ie7mg"]
+[ext_resource type="PackedScene" uid="uid://cuh4vpnyn3g26" path="res://grid_3d/scenes/debug_cube.tscn" id="1_lyaxi"]
+[ext_resource type="Script" path="res://grid_3d/scripts/resources/objects_data_resource.gd" id="2_3word"]
+[ext_resource type="PackedScene" uid="uid://h4xl6p2gb3o4" path="res://grid_3d/scenes/debug_slab.tscn" id="3_p0heq"]
+
+[sub_resource type="Resource" id="Resource_ytnyp"]
+resource_name = "Slab"
+script = ExtResource("2_3word")
+name = "Slab"
+id = 0
+size = Vector3i(2, 1, 2)
+object_scene = ExtResource("3_p0heq")
+
+[sub_resource type="Resource" id="Resource_wky1s"]
+resource_name = "Cube"
+script = ExtResource("2_3word")
+name = "Cube"
+id = 1
+size = Vector3i(1, 1, 1)
+object_scene = ExtResource("1_lyaxi")
+
+[resource]
+script = ExtResource("1_ie7mg")
+objects_data = Array[ExtResource("2_3word")]([SubResource("Resource_ytnyp"), SubResource("Resource_wky1s")])

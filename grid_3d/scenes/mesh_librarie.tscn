@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://de7elxev6yek3"]
+[gd_scene load_steps=5 format=3 uid="uid://de7elxev6yek3"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_8wwtm"]
 
@@ -8,9 +8,12 @@ data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0
 [sub_resource type="BoxMesh" id="BoxMesh_4eaf3"]
 size = Vector3(1, 0.5, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_vbmbe"]
+
 [node name="DebugMeshLibraies" type="Node3D"]
 
 [node name="cube" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_8wwtm")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="cube"]
@@ -18,9 +21,16 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="cube/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("ConcavePolygonShape3D_2wua7")
 
 [node name="slab" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 mesh = SubResource("BoxMesh_4eaf3")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="slab"]
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="slab/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.19419, 0)
+shape = SubResource("BoxShape3D_vbmbe")

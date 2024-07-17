@@ -1,11 +1,11 @@
 shader_type spatial;
 render_mode unshaded;
 
-uniform int scale_0 : hint_range(0, 1024, 1);
+uniform vec2 scale = vec2(20,20);
 
-uniform float line_scale_0 : hint_range(0.001, 1.0, 0.001);
+uniform float line_scale : hint_range(0.001, 1.0, 0.001) = 0.06;
 
-uniform vec4 color_0 : source_color;
+uniform vec4 color : source_color = vec4(1.0);
 
 float pristineGrid(vec2 uv, vec2 lineWidth)
 {
@@ -40,8 +40,8 @@ void fragment()
 {
 	vec2 newUV = UV;
 	
-	vec3 grid_0 = vec3(pristineGrid(newUV * float(scale_0), vec2(line_scale_0)));
+	vec3 grid = vec3(pristineGrid(newUV * scale, vec2(line_scale)));
 	
-	ALBEDO = grid_0 * color_0.rgb;
-	ALPHA = length(ALBEDO);
+	ALBEDO = grid * color.rgb;
+	ALPHA = length(grid) * color.a;
 }
