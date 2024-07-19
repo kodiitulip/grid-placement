@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://g13qagk7jk3a"]
+
+[ext_resource type="Shader" path="res://grid_3d/assets/shaders/grid_shader.gdshader" id="1_67fbt"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_67fbt")
+shader_parameter/scale = Vector2(20, 20)
+shader_parameter/line_scale = 0.06
+shader_parameter/color = Color(1, 1, 1, 1)

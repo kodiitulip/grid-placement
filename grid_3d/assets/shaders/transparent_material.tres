@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dtc0ogwj04t7n"]
+
+[ext_resource type="Shader" uid="uid://dxelcqkbiwo0q" path="res://grid_3d/assets/shaders/transparent_shader.tres" id="1_0fd45"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_0fd45")
+shader_parameter/BaseColor = Color(1, 1, 1, 0.501961)

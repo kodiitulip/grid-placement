@@ -16,49 +16,17 @@ metadata/_edit_use_anchors_ = true
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="HFlowContainer" type="FlowContainer" parent="HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 8.0
+
+[node name="ItemsContainer" type="FlowContainer" parent="HBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 vertical = true
-
-[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="HBoxContainer/HFlowContainer"]
-custom_minimum_size = Vector2(60, 0)
-layout_mode = 2
-size_flags_vertical = 3
-alignment_horizontal = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/HFlowContainer/AspectRatioContainer2"]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="Slab" type="Button" parent="HBoxContainer/HFlowContainer/AspectRatioContainer2/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_default_cursor_shape = 2
-text = "S"
-
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="HBoxContainer/HFlowContainer"]
-custom_minimum_size = Vector2(60, 0)
-layout_mode = 2
-size_flags_vertical = 3
-alignment_horizontal = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/HFlowContainer/AspectRatioContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="Cube" type="Button" parent="HBoxContainer/HFlowContainer/AspectRatioContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_default_cursor_shape = 2
-text = "C"
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="HBoxContainer"]
 layout_mode = 2
@@ -71,10 +39,9 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Button" type="Button" parent="HBoxContainer/AspectRatioContainer/MarginContainer"]
+[node name="Remove" type="Button" parent="HBoxContainer/AspectRatioContainer/MarginContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "X"
 
-[connection signal="pressed" from="HBoxContainer/HFlowContainer/AspectRatioContainer2/MarginContainer/Slab" to="." method="_on_slab_pressed"]
-[connection signal="pressed" from="HBoxContainer/HFlowContainer/AspectRatioContainer/MarginContainer/Cube" to="." method="_on_cube_pressed"]
+[connection signal="pressed" from="HBoxContainer/AspectRatioContainer/MarginContainer/Remove" to="." method="_on_remove_pressed"]

@@ -33,3 +33,16 @@ func can_place_object_at(grid_pos: Vector3i, obj_size: Vector3i) -> bool:
 		if _placed_objects.has(pos):
 			return false
 	return true
+
+
+func get_representation_index(grid_pos: Vector3i) -> int:
+	if !_placed_objects.has(grid_pos):
+		return -1
+	
+	return _placed_objects[grid_pos].placed_object_index
+
+
+func remove_object_at(grid_pos: Vector3i) -> void:
+	for pos: Vector3i in _placed_objects[grid_pos].occupied_positions:
+		_placed_objects.erase(pos)
+		
